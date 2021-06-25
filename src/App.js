@@ -1,13 +1,20 @@
+import { useEffect } from 'react';
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './App.css';
 import Header from './components/Header.js';
 import Home from './components/Home.js';
 import Login from './components/Login.js';
+import { getUserAuth } from './actions';
+import { connect } from 'react-redux';
 
 
 
-function App() {
+function App(props) {
+  useEffect(() => {
+    props.getUserAuth();
+  }, []);
+
   return (
     <div className="App">
       
@@ -29,4 +36,15 @@ function App() {
   );
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {};
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  getUserAuth: () => dispatch(getUserAuth()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
+
+
+
