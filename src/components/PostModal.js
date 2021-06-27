@@ -3,6 +3,9 @@ import { useState } from "react";
 import styled from "styled-components";
 import ReactPlayer from "react-player";
 import { connect } from "react-redux";
+import firebase from "firebase";
+import { postArticleAPI } from "../actions";
+
 
 const PostModal = (props) => {
     const [editorText, setEditorText] = useState("");
@@ -24,6 +27,24 @@ const PostModal = (props) => {
         setShareImage("");
         setVideoLink('');
         setAssetArea(area);
+    }
+
+    const postArticle = (e) => {
+        e.preventDefault();
+        if (e.target !== e.currentTarget) {
+            return;
+        }
+
+        const payload = {
+            image: shareImage,
+            video: videoLink,
+            user: props.user,
+            description: editorText,
+            timestamp: firebase.firestore.Timestamp.now(),
+        }
+
+        props.postArticle(payload);
+        reset(e);
     }
 
     const reset = (e) => {
@@ -53,8 +74,8 @@ const PostModal = (props) => {
                                     <img src={props.user.photoURL}/> 
                                 ) : (
                                     <img src="/images/user.svg" alt="" />
-                                )};
-                            <span>Name</span>
+                                )}
+                            <span>{props.user.displayName}</span>
                         </UserInfo>
 
                         <Editor>
@@ -115,7 +136,7 @@ const PostModal = (props) => {
                             </AssetButton>
                         </ShareComment>
 
-                        <PostButton disabled={!editorText ? true: false}>
+                        <PostButton disabled={!editorText ? true: false} onClick={(event) => postArticle(event)}>
                             Post
                         </PostButton>
                         
@@ -189,7 +210,7 @@ const SharedContent = styled.div`
 const UserInfo = styled.div`
     display: flex;
     align-items: center;
-    padding: 12p 24px;
+    padding: 12px 24px;
     svg, img {
         width: 48px;
         height: 48px;
@@ -278,10 +299,12 @@ const UploadImage = styled.div`
 
 const mapStateToProps = (state) => {
     return {
-        user: state.useState.state,
+        user: state.userState.user,
     };
 };
 
-const mapDispatchToProps = (dispatch) => ({});
+const mapDispatchToProps = (dispatch) => ({
+    postArticle: (payload) => dispatch(postArticleAPI(payload)),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostModal);
