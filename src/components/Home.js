@@ -77,11 +77,12 @@ const Layout = styled.div`
     column-gap: 25px;
     row-gap: 25px;
     /* grid-template-row: auto; */
-    margin: 25px 0;
+    margin: 25px 20px;
     @media (max-width: 768px) {
         display: flex;
         flex-direction: column;
         padding: 0 5px;
+        margin: 25px 0;
 
     }
 `;

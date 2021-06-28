@@ -9,7 +9,7 @@ const Header = (props) => {
             <Content>
                 <Logo>
                     <a href="/home">
-                        <img src="/images/home-logo.svg" alt="" />
+                        <img src="/images/linkedin.png" alt="" />
                     </a>
                 </Logo>
 
@@ -118,6 +118,10 @@ const Content = styled.div`
 const Logo = styled.span`
     margin-right: 8px;
     font-size: 0px;
+    img {
+        max-width: 48px;
+        max-height: 48px;
+    }
 `;
 
 const Search = styled.div`
